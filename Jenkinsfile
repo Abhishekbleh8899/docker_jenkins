@@ -2,31 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('build') {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', 
+                    url: 'https://github.com/Abhishekbleh8899/docker_jenkins.git',
+                    credentialsId: 'your-git-credentials-id'
+            }
+        }
+
+        stage('Build') {
             agent {
-                docker { 
-                    image 'node:18-alpine' 
-                    args '--user=root'  // Allow installing packages
+                docker {
+                    image 'node:18-alpine'
                 }
             }
             steps {
                 sh ''' 
                 node --version
                 npm --version
-                
-                # Set npm cache to a writable directory
-                npm config set cache /home/node/.npm
-                
-                # Ensure cache directory is writable
-                mkdir -p /home/node/.npm && chmod -R 755 /home/node/.npm
-                
-                # Remove old dependencies
-                rm -rf node_modules package-lock.json
-
-                # Clean npm cache
-                npm cache clean --force
-
-                # Install dependencies and build
                 npm install
                 npm run build
                 '''
