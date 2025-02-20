@@ -6,7 +6,7 @@ pipeline {
             steps {
                 git branch: 'main', 
                     url: 'https://github.com/Abhishekbleh8899/docker_jenkins.git',
-                    credentialsId: 'your-git-credentials-id'
+                    credentialsId: 'github-credentials'
             }
         }
 
